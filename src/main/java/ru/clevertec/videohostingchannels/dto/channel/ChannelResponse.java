@@ -3,7 +3,6 @@ package ru.clevertec.videohostingchannels.dto.channel;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import ru.clevertec.videohostingchannels.dto.user.UserResponse;
 
 import java.time.LocalDateTime;
 
@@ -11,7 +10,7 @@ import java.time.LocalDateTime;
 public record ChannelResponse(Long id,
                               String name,
                               String shortDescription,
-                              UserResponse author,
+                              Long authorId,
 
                               @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
                               LocalDateTime createdAt,

@@ -10,6 +10,8 @@ public interface UserMapper {
 
     User fromRequest(UserRequest request);
 
+    User fromRequest(Long id, UserRequest request);
+
     UserResponse toResponse(User user);
 
 }

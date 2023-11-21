@@ -5,17 +5,19 @@ import org.mapstruct.Mapping;
 import ru.clevertec.videohostingchannels.dto.channel.ChannelRequest;
 import ru.clevertec.videohostingchannels.dto.channel.ChannelResponse;
 import ru.clevertec.videohostingchannels.model.Channel;
-import ru.clevertec.videohostingchannels.model.User;
+
+import java.time.LocalDateTime;
 
 @Mapper(uses = UserMapper.class)
 public interface ChannelMapper {
 
-    @Mapping(target = "author.id", source = "request.authorId")
-    Channel fromRequest(ChannelRequest request);
+    @Mapping(target = "author.id", source = "authorId")
+    Channel fromRequest(Long authorId, ChannelRequest request);
 
-    @Mapping(target = "id", source = "channel.id")
-    @Mapping(target = "name", source = "channel.name")
-    @Mapping(target = "author", source = "user")
-    ChannelResponse toResponse(Channel channel, User user);
+    @Mapping(target = "author.id", source = "authorId")
+    Channel fromRequest(Long id, Long authorId, LocalDateTime createdAt, ChannelRequest request);
+
+    @Mapping(target = "authorId", source = "channel.author.id")
+    ChannelResponse toResponse(Channel channel);
 
 }

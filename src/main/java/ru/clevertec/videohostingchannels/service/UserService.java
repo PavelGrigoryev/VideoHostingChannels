@@ -7,4 +7,6 @@ public interface UserService {
 
     UserResponse save(UserRequest request);
 
+    UserResponse updateById(Long id, UserRequest request);
+
 }

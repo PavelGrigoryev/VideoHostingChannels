@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public record ChannelRequest(String name,
                              String shortDescription,
-                             Long authorId,
                              String mainLanguage,
                              String avatar,
                              String category) {
