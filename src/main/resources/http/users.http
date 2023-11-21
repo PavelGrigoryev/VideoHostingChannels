@@ -1,0 +1,10 @@
+###save
+POST http://localhost:8080/users
+Accept: application/json
+Content-Type: application/json
+
+{
+  "nickname": "Scorpion",
+  "name": "Hanzo",
+  "email": "scorpionMK@gmail.com"
+}
