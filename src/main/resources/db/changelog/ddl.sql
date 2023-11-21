@@ -4,7 +4,7 @@
 CREATE TABLE IF NOT EXISTS users
 (
     id       BIGSERIAL PRIMARY KEY,
-    nickname VARCHAR(50)  NOT NULL UNIQUE,
+    nickname VARCHAR(50)  NOT NULL,
     name     VARCHAR(50)  NOT NULL,
     email    VARCHAR(100) NOT NULL UNIQUE
 );
@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS users
 CREATE TABLE IF NOT EXISTS channels
 (
     id                BIGSERIAL PRIMARY KEY,
-    name              VARCHAR(40)                  NOT NULL,
+    name              VARCHAR(40)                  NOT NULL UNIQUE,
     short_description VARCHAR(500)                 NOT NULL,
     author_id         BIGINT REFERENCES users (id) NOT NULL,
     created_at        TIMESTAMP                    NOT NULL,

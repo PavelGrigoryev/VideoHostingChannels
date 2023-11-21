@@ -1,0 +1,13 @@
+###save
+POST http://localhost:8080/channels
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "Mortal Kombat",
+  "short_description": "MK fun-club #1! All fans are welcome!!!",
+  "author_id": 1,
+  "main_language": "Spanish",
+  "avatar": "clown.png",
+  "category": "Video Games"
+}
