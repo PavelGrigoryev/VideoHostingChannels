@@ -3,12 +3,17 @@ package ru.clevertec.videohostingchannels.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.clevertec.videohostingchannels.dto.channel.ChannelNamesResponse;
 import ru.clevertec.videohostingchannels.dto.user.UserRequest;
 import ru.clevertec.videohostingchannels.dto.user.UserResponse;
 import ru.clevertec.videohostingchannels.exception.NotFoundException;
 import ru.clevertec.videohostingchannels.mapper.UserMapper;
+import ru.clevertec.videohostingchannels.model.Channel;
+import ru.clevertec.videohostingchannels.model.Subscription;
 import ru.clevertec.videohostingchannels.repository.UserRepository;
 import ru.clevertec.videohostingchannels.service.UserService;
+
+import java.util.function.Supplier;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +36,22 @@ public class UserServiceImpl implements UserService {
                 .map(user -> userMapper.fromRequest(user.getId(), request))
                 .map(userRepository::save)
                 .map(userMapper::toResponse)
-                .orElseThrow(() -> new NotFoundException("User with id %s is not found".formatted(id)));
+                .orElseThrow(throwNotFoundException(id));
+    }
+
+    @Override
+    public ChannelNamesResponse findAllSubscribedChannelNamesById(Long id) {
+        return new ChannelNamesResponse(userRepository.findWithSubscriptionsChannelById(id)
+                .orElseThrow(throwNotFoundException(id))
+                .getSubscriptions()
+                .stream()
+                .map(Subscription::getChannel)
+                .map(Channel::getName)
+                .toList());
+    }
+
+    private Supplier<NotFoundException> throwNotFoundException(Long id) {
+        return () -> new NotFoundException("User with id %s is not found".formatted(id));
     }
 
 }

@@ -19,3 +19,7 @@ Content-Type: application/json
   "name": "Lieng",
   "email": "frostPowerMK@gmail.com"
 }
+
+###findAllSubscribedChannelNamesById
+GET http://localhost:8080/users/2
+Accept: application/json

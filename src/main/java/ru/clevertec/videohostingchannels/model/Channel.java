@@ -21,6 +21,7 @@ import ru.clevertec.videohostingchannels.model.listener.ChannelCreatedAtListener
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -53,5 +54,18 @@ public class Channel {
     private String mainLanguage;
     private String avatar;
     private String category;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Channel channel = (Channel) o;
+        return Objects.equals(id, channel.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 
 }

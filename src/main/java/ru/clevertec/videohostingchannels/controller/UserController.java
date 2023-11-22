@@ -3,12 +3,14 @@ package ru.clevertec.videohostingchannels.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.clevertec.videohostingchannels.dto.channel.ChannelNamesResponse;
 import ru.clevertec.videohostingchannels.dto.user.UserRequest;
 import ru.clevertec.videohostingchannels.dto.user.UserResponse;
 import ru.clevertec.videohostingchannels.service.UserService;
@@ -28,6 +30,11 @@ public class UserController {
     @PutMapping("/{id}")
     public ResponseEntity<UserResponse> updateById(@PathVariable Long id, @RequestBody UserRequest request) {
         return ResponseEntity.ok(userService.updateById(id, request));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ChannelNamesResponse> findAllSubscribedChannelNamesById(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.findAllSubscribedChannelNamesById(id));
     }
 
 }
