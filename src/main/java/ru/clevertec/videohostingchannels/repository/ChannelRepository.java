@@ -1,7 +1,20 @@
 package ru.clevertec.videohostingchannels.repository;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import ru.clevertec.videohostingchannels.model.Channel;
 
+import java.util.List;
+
 public interface ChannelRepository extends JpaRepository<Channel, Long> {
+
+    @Query("""
+            SELECT c FROM Channel c
+            WHERE (:name IS NULL OR c.name LIKE %:name%)
+            AND (:language IS NULL OR c.mainLanguage = :language)
+            AND (:category IS NULL OR c.category LIKE %:category%)
+            """)
+    List<Channel> findAllByFilter(String name, String language, String category, Pageable pageable);
+
 }

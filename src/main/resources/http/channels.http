@@ -23,3 +23,7 @@ Content-Type: application/json
   "avatar": "robotic.jpeg",
   "category": "Action Movies"
 }
+
+###findAllByFilter
+GET http://localhost:8080/channels?name=Mortal&language=Spanish&category=Video&page=0&size=3&sort=name
+Accept: application/json

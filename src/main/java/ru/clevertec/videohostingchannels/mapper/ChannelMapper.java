@@ -2,6 +2,7 @@ package ru.clevertec.videohostingchannels.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import ru.clevertec.videohostingchannels.dto.channel.ChannelFilterResponse;
 import ru.clevertec.videohostingchannels.dto.channel.ChannelRequest;
 import ru.clevertec.videohostingchannels.dto.channel.ChannelResponse;
 import ru.clevertec.videohostingchannels.model.Channel;
@@ -19,5 +20,7 @@ public interface ChannelMapper {
 
     @Mapping(target = "authorId", source = "channel.author.id")
     ChannelResponse toResponse(Channel channel);
+
+    ChannelFilterResponse toFilterInfoResponse(Channel channel, Integer subscribersCount);
 
 }

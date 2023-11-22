@@ -1,8 +1,10 @@
 package ru.clevertec.videohostingchannels.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.clevertec.videohostingchannels.dto.channel.ChannelFilterResponse;
 import ru.clevertec.videohostingchannels.dto.channel.ChannelRequest;
 import ru.clevertec.videohostingchannels.dto.channel.ChannelResponse;
 import ru.clevertec.videohostingchannels.exception.NotFoundException;
@@ -10,6 +12,8 @@ import ru.clevertec.videohostingchannels.mapper.ChannelMapper;
 import ru.clevertec.videohostingchannels.repository.ChannelRepository;
 import ru.clevertec.videohostingchannels.repository.UserRepository;
 import ru.clevertec.videohostingchannels.service.ChannelService;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +41,14 @@ public class ChannelServiceImpl implements ChannelService {
                 .map(channelRepository::save)
                 .map(channelMapper::toResponse)
                 .orElseThrow(() -> new NotFoundException("Channel wit id %s is not found".formatted(id)));
+    }
+
+    @Override
+    public List<ChannelFilterResponse> findAllByFilter(String name, String language, String category, Pageable pageable) {
+        return channelRepository.findAllByFilter(name, language, category, pageable)
+                .stream()
+                .map(channel -> channelMapper.toFilterInfoResponse(channel, channel.getSubscriptions().size()))
+                .toList();
     }
 
 }
