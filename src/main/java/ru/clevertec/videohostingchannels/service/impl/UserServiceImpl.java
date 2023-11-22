@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
                 .map(user -> userMapper.fromRequest(user.getId(), request))
                 .map(userRepository::save)
                 .map(userMapper::toResponse)
-                .orElseThrow(() -> new NotFoundException("User wit id %s is not found".formatted(id)));
+                .orElseThrow(() -> new NotFoundException("User with id %s is not found".formatted(id)));
     }
 
 }

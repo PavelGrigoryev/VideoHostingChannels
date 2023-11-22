@@ -7,9 +7,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -46,12 +45,9 @@ public class Channel {
     @ToString.Exclude
     private User author;
 
-    @ManyToMany
-    @JoinTable(name = "subscriptions",
-            joinColumns = @JoinColumn(name = "channel_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @OneToMany(mappedBy = "channel")
     @ToString.Exclude
-    private List<User> subscribers = new ArrayList<>();
+    private List<Subscription> subscriptions = new ArrayList<>();
 
     private LocalDateTime createdAt;
     private String mainLanguage;

@@ -8,7 +8,7 @@ import ru.clevertec.videohostingchannels.model.Channel;
 
 import java.time.LocalDateTime;
 
-@Mapper(uses = UserMapper.class)
+@Mapper
 public interface ChannelMapper {
 
     @Mapping(target = "author.id", source = "authorId")

@@ -25,7 +25,7 @@ public class ChannelServiceImpl implements ChannelService {
     public ChannelResponse saveByAuthorId(Long authorId, ChannelRequest request) {
         return userRepository.findById(authorId)
                 .map(user -> channelMapper.toResponse(channelRepository.save(channelMapper.fromRequest(authorId, request))))
-                .orElseThrow(() -> new NotFoundException("User wit author_id %s is not found".formatted(authorId)));
+                .orElseThrow(() -> new NotFoundException("User with author_id %s is not found".formatted(authorId)));
     }
 
     @Override
