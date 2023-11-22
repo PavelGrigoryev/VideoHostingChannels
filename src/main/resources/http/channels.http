@@ -27,3 +27,7 @@ Content-Type: application/json
 ###findAllByFilter
 GET http://localhost:8080/channels?name=Mortal&language=Spanish&category=Video&page=0&size=3&sort=name
 Accept: application/json
+
+###findDetailedInformationById
+GET http://localhost:8080/channels/2
+Accept: application/json

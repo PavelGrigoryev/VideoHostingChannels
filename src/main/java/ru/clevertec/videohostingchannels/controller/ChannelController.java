@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ru.clevertec.videohostingchannels.dto.channel.ChannelDetailedInformationResponse;
 import ru.clevertec.videohostingchannels.dto.channel.ChannelFilterResponse;
 import ru.clevertec.videohostingchannels.dto.channel.ChannelRequest;
 import ru.clevertec.videohostingchannels.dto.channel.ChannelResponse;
@@ -42,6 +43,11 @@ public class ChannelController {
                                                                        @RequestParam(required = false) String category,
                                                                        Pageable pageable) {
         return ResponseEntity.ok(channelService.findAllByFilter(name, language, category, pageable));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ChannelDetailedInformationResponse> findDetailedInformationById(@PathVariable Long id) {
+        return ResponseEntity.ok(channelService.findDetailedInformationById(id));
     }
 
 }

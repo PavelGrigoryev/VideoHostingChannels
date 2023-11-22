@@ -1,11 +1,13 @@
 package ru.clevertec.videohostingchannels.repository;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import ru.clevertec.videohostingchannels.model.Channel;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ChannelRepository extends JpaRepository<Channel, Long> {
 
@@ -16,5 +18,8 @@ public interface ChannelRepository extends JpaRepository<Channel, Long> {
             AND (:category IS NULL OR c.category LIKE %:category%)
             """)
     List<Channel> findAllByFilter(String name, String language, String category, Pageable pageable);
+
+    @EntityGraph(attributePaths = {"author", "subscriptions.user"})
+    Optional<Channel> findDetailedInformationById(Long id);
 
 }

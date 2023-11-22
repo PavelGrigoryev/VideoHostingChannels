@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.clevertec.videohostingchannels.dto.channel.ChannelDetailedInformationResponse;
 import ru.clevertec.videohostingchannels.dto.channel.ChannelFilterResponse;
 import ru.clevertec.videohostingchannels.dto.channel.ChannelRequest;
 import ru.clevertec.videohostingchannels.dto.channel.ChannelResponse;
@@ -14,6 +15,7 @@ import ru.clevertec.videohostingchannels.repository.UserRepository;
 import ru.clevertec.videohostingchannels.service.ChannelService;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 @Service
 @RequiredArgsConstructor
@@ -40,7 +42,7 @@ public class ChannelServiceImpl implements ChannelService {
                         (channel.getId(), channel.getAuthor().getId(), channel.getCreatedAt(), request))
                 .map(channelRepository::save)
                 .map(channelMapper::toResponse)
-                .orElseThrow(() -> new NotFoundException("Channel wit id %s is not found".formatted(id)));
+                .orElseThrow(throwNotFoundException(id));
     }
 
     @Override
@@ -49,6 +51,17 @@ public class ChannelServiceImpl implements ChannelService {
                 .stream()
                 .map(channel -> channelMapper.toFilterInfoResponse(channel, channel.getSubscriptions().size()))
                 .toList();
+    }
+
+    @Override
+    public ChannelDetailedInformationResponse findDetailedInformationById(Long id) {
+        return channelRepository.findDetailedInformationById(id)
+                .map(channelMapper::toDetailedInformationResponse)
+                .orElseThrow(throwNotFoundException(id));
+    }
+
+    private Supplier<NotFoundException> throwNotFoundException(Long id) {
+        return () -> new NotFoundException("Channel wit id %s is not found".formatted(id));
     }
 
 }
