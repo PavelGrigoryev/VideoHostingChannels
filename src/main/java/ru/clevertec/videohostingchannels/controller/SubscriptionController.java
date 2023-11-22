@@ -2,6 +2,7 @@ package ru.clevertec.videohostingchannels.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,11 @@ public class SubscriptionController {
     @PostMapping
     public ResponseEntity<SubscriptionResponse> subscribeOn(@RequestBody SubscriptionRequest request) {
         return ResponseEntity.ok(subscriptionService.subscribeOn(request));
+    }
+
+    @DeleteMapping
+    public ResponseEntity<SubscriptionResponse> subscribeOff(@RequestBody SubscriptionRequest request) {
+        return ResponseEntity.ok(subscriptionService.subscribeOff(request));
     }
 
 }

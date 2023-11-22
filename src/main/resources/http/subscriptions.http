@@ -7,3 +7,13 @@ Content-Type: application/json
   "user_id": 1,
   "channel_id": 1
 }
+
+###subscribeOff
+DELETE http://localhost:8080/subscriptions
+Accept: application/json
+Content-Type: application/json
+
+{
+  "user_id": 1,
+  "channel_id": 1
+}

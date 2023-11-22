@@ -7,4 +7,6 @@ public interface SubscriptionService {
 
     SubscriptionResponse subscribeOn(SubscriptionRequest request);
 
+    SubscriptionResponse subscribeOff(SubscriptionRequest request);
+
 }

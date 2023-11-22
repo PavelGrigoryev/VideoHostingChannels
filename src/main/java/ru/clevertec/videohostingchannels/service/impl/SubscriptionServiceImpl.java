@@ -37,4 +37,17 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         return subscriptionMapper.toResponse(subscription, SubscriptionStatus.ENABLED);
     }
 
+    @Override
+    @Transactional
+    public SubscriptionResponse subscribeOff(SubscriptionRequest request) {
+        return subscriptionRepository.findByIdWithUserAndChannel(request.userId(), request.channelId())
+                .map(subscription -> {
+                    subscriptionRepository.delete(subscription);
+                    return subscription;
+                })
+                .map(subscription -> subscriptionMapper.toResponse(subscription, SubscriptionStatus.DISABLED))
+                .orElseThrow(() -> new NotFoundException("Subscription with user_id %s and channel_id %s is not found"
+                        .formatted(request.userId(), request.channelId())));
+    }
+
 }
