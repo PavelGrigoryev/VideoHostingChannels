@@ -19,7 +19,15 @@ public interface ChannelRepository extends JpaRepository<Channel, Long> {
             """)
     List<Channel> findAllByFilter(String name, String language, String category, Pageable pageable);
 
-    @EntityGraph(attributePaths = {"author", "subscriptions.user"})
+    @Query("""
+            SELECT COUNT(u.id) FROM Channel c
+            JOIN Subscription s ON c.id = s.channel.id
+            JOIN User u ON s.user.id = u.id
+            WHERE c.id = :id
+            """)
+    Integer findSubscribersCountById(Long id);
+
+    @EntityGraph(attributePaths = {"author"})
     Optional<Channel> findDetailedInformationById(Long id);
 
 }

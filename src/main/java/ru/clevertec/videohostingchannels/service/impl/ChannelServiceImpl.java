@@ -49,14 +49,16 @@ public class ChannelServiceImpl implements ChannelService {
     public List<ChannelFilterResponse> findAllByFilter(String name, String language, String category, Pageable pageable) {
         return channelRepository.findAllByFilter(name, language, category, pageable)
                 .stream()
-                .map(channel -> channelMapper.toFilterInfoResponse(channel, channel.getSubscriptions().size()))
+                .map(channel -> channelMapper.toFilterInfoResponse(channel,
+                        channelRepository.findSubscribersCountById(channel.getId())))
                 .toList();
     }
 
     @Override
     public ChannelDetailedInformationResponse findDetailedInformationById(Long id) {
         return channelRepository.findDetailedInformationById(id)
-                .map(channelMapper::toDetailedInformationResponse)
+                .map(channel -> channelMapper.toDetailedInformationResponse(channel,
+                        channelRepository.findSubscribersCountById(id)))
                 .orElseThrow(throwNotFoundException(id));
     }
 
