@@ -1,31 +1,51 @@
 ###saveByAuthorId
 POST http://localhost:8080/channels?authorId=1
-Accept: application/json
+Content-Type:  multipart/form-data; boundary=ImageBoundary
+
+--ImageBoundary
+Content-Disposition: form-data; name="request"; filename="channelRequest.json"
 Content-Type: application/json
 
 {
   "name": "Mortal Kombat",
   "short_description": "MK fun-club #1! All fans are welcome!!!",
-  "main_language": "Spanish",
-  "avatar": "clown.png",
+  "main_language": "English",
   "category": "Video Games"
 }
 
+--ImageBoundary
+Content-Disposition: form-data; name="file"; filename="arnold.jpg"
+Content-Type: image/jpeg
+
+< ../avatars/arnold.jpg
+
+--ImageBoundary--
+
 ###updateById
 PUT http://localhost:8080/channels/1
-Accept: application/json
+Content-Type:  multipart/form-data; boundary=ImageBoundary
+
+--ImageBoundary
+Content-Disposition: form-data; name="request"; filename="channelRequest.json"
 Content-Type: application/json
 
 {
   "name": "RoboCop",
   "short_description": "RoboCop original movie fans",
   "main_language": "English",
-  "avatar": "robotic.jpeg",
   "category": "Action Movies"
 }
 
+--ImageBoundary
+Content-Disposition: form-data; name="file"; filename="arnold.jpg"
+Content-Type: image/jpeg
+
+< ../avatars/vin.jpg
+
+--ImageBoundary--
+
 ###findAllByFilter
-GET http://localhost:8080/channels?name=Mortal&language=Spanish&category=Video&page=0&size=3&sort=name
+GET http://localhost:8080/channels?name=Mortal&language=English&category=Video&page=0&size=3&sort=name
 Accept: application/json
 
 ###findDetailedInformationById

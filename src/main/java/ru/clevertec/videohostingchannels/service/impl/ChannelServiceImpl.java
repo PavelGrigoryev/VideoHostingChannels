@@ -4,16 +4,19 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import ru.clevertec.videohostingchannels.dto.channel.ChannelDetailedInformationResponse;
 import ru.clevertec.videohostingchannels.dto.channel.ChannelFilterResponse;
 import ru.clevertec.videohostingchannels.dto.channel.ChannelRequest;
 import ru.clevertec.videohostingchannels.dto.channel.ChannelResponse;
+import ru.clevertec.videohostingchannels.exception.MultipartGetBytesException;
 import ru.clevertec.videohostingchannels.exception.NotFoundException;
 import ru.clevertec.videohostingchannels.mapper.ChannelMapper;
 import ru.clevertec.videohostingchannels.repository.ChannelRepository;
 import ru.clevertec.videohostingchannels.repository.UserRepository;
 import ru.clevertec.videohostingchannels.service.ChannelService;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -28,18 +31,31 @@ public class ChannelServiceImpl implements ChannelService {
 
     @Override
     @Transactional
-    public ChannelResponse saveByAuthorId(Long authorId, ChannelRequest request) {
+    public ChannelResponse saveByAuthorId(Long authorId, ChannelRequest request, MultipartFile file) {
         return userRepository.findById(authorId)
-                .map(user -> channelMapper.toResponse(channelRepository.save(channelMapper.fromRequest(authorId, request))))
+                .map(user -> {
+                    try {
+                        return channelMapper.toResponse(channelRepository
+                                .save(channelMapper.fromRequest(authorId, request, file.getBytes())));
+                    } catch (IOException e) {
+                        throw new MultipartGetBytesException("Error to save avatar");
+                    }
+                })
                 .orElseThrow(() -> new NotFoundException("User with author_id %s is not found".formatted(authorId)));
     }
 
     @Override
     @Transactional
-    public ChannelResponse updateById(Long id, ChannelRequest request) {
+    public ChannelResponse updateById(Long id, ChannelRequest request, MultipartFile file) {
         return channelRepository.findById(id)
-                .map(channel -> channelMapper.fromRequest
-                        (channel.getId(), channel.getAuthor().getId(), channel.getCreatedAt(), request))
+                .map(channel -> {
+                    try {
+                        return channelMapper.fromRequest
+                                (channel.getId(), channel.getAuthor().getId(), channel.getCreatedAt(), request, file.getBytes());
+                    } catch (IOException e) {
+                        throw new MultipartGetBytesException("Error to update avatar");
+                    }
+                })
                 .map(channelRepository::save)
                 .map(channelMapper::toResponse)
                 .orElseThrow(throwNotFoundException(id));
@@ -63,7 +79,7 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     private Supplier<NotFoundException> throwNotFoundException(Long id) {
-        return () -> new NotFoundException("Channel wit id %s is not found".formatted(id));
+        return () -> new NotFoundException("Channel with id %s is not found".formatted(id));
     }
 
 }

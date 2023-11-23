@@ -7,6 +7,5 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 public record ChannelRequest(String name,
                              String shortDescription,
                              String mainLanguage,
-                             String avatar,
                              String category) {
 }

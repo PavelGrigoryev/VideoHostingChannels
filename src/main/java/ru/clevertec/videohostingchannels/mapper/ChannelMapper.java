@@ -14,10 +14,10 @@ import java.time.LocalDateTime;
 public interface ChannelMapper {
 
     @Mapping(target = "author.id", source = "authorId")
-    Channel fromRequest(Long authorId, ChannelRequest request);
+    Channel fromRequest(Long authorId, ChannelRequest request, byte[] avatar);
 
     @Mapping(target = "author.id", source = "authorId")
-    Channel fromRequest(Long id, Long authorId, LocalDateTime createdAt, ChannelRequest request);
+    Channel fromRequest(Long id, Long authorId, LocalDateTime createdAt, ChannelRequest request, byte[] avatar);
 
     @Mapping(target = "authorId", source = "channel.author.id")
     ChannelResponse toResponse(Channel channel);

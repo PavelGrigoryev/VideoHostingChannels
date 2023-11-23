@@ -3,6 +3,7 @@ package ru.clevertec.videohostingchannels.repository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import ru.clevertec.videohostingchannels.model.Channel;
 
@@ -29,5 +30,12 @@ public interface ChannelRepository extends JpaRepository<Channel, Long> {
 
     @EntityGraph(attributePaths = {"author"})
     Optional<Channel> findDetailedInformationById(Long id);
+
+    @Modifying
+    @Query("""
+            UPDATE Channel c SET c.avatar = :avatar
+            WHERE c.id = :id
+            """)
+    void updateAvatarById(Long id, byte[] avatar);
 
 }

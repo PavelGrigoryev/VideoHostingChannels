@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import ru.clevertec.videohostingchannels.dto.user.UserResponse;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public record ChannelDetailedInformationResponse(Long id,
@@ -18,6 +19,35 @@ public record ChannelDetailedInformationResponse(Long id,
                                                  LocalDateTime createdAt,
 
                                                  String mainLanguage,
-                                                 String avatar,
+                                                 byte[] avatar,
                                                  String category) {
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ChannelDetailedInformationResponse that = (ChannelDetailedInformationResponse) o;
+        return Arrays.equals(avatar, that.avatar);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(avatar);
+    }
+
+    @Override
+    public String toString() {
+        return "ChannelDetailedInformationResponse{" +
+               "id=" + id +
+               ", name='" + name + '\'' +
+               ", shortDescription='" + shortDescription + '\'' +
+               ", author=" + author +
+               ", subscribersCount=" + subscribersCount +
+               ", createdAt=" + createdAt +
+               ", mainLanguage='" + mainLanguage + '\'' +
+               ", avatar=" + Arrays.toString(avatar) +
+               ", category='" + category + '\'' +
+               '}';
+    }
+
 }

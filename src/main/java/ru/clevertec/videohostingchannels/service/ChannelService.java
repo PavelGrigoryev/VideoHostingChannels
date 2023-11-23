@@ -1,6 +1,7 @@
 package ru.clevertec.videohostingchannels.service;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 import ru.clevertec.videohostingchannels.dto.channel.ChannelDetailedInformationResponse;
 import ru.clevertec.videohostingchannels.dto.channel.ChannelFilterResponse;
 import ru.clevertec.videohostingchannels.dto.channel.ChannelRequest;
@@ -10,9 +11,9 @@ import java.util.List;
 
 public interface ChannelService {
 
-    ChannelResponse saveByAuthorId(Long authorId, ChannelRequest request);
+    ChannelResponse saveByAuthorId(Long authorId, ChannelRequest request, MultipartFile file);
 
-    ChannelResponse updateById(Long id, ChannelRequest request);
+    ChannelResponse updateById(Long id, ChannelRequest request, MultipartFile file);
 
     List<ChannelFilterResponse> findAllByFilter(String name, String language, String category, Pageable pageable);
 

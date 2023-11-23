@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS channels
     author_id         BIGINT REFERENCES users (id) NOT NULL,
     created_at        TIMESTAMP                    NOT NULL,
     main_language     VARCHAR(20)                  NOT NULL,
-    avatar            VARCHAR(100)                 NOT NULL,
+    avatar            oid,
     category          VARCHAR(20)                  NOT NULL
 );
 

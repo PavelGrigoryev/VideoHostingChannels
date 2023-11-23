@@ -8,10 +8,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import ru.clevertec.videohostingchannels.dto.channel.ChannelDetailedInformationResponse;
 import ru.clevertec.videohostingchannels.dto.channel.ChannelFilterResponse;
 import ru.clevertec.videohostingchannels.dto.channel.ChannelRequest;
@@ -28,13 +29,17 @@ public class ChannelController {
     private final ChannelService channelService;
 
     @PostMapping
-    public ResponseEntity<ChannelResponse> saveByAuthorId(@RequestParam Long authorId, @RequestBody ChannelRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(channelService.saveByAuthorId(authorId, request));
+    public ResponseEntity<ChannelResponse> saveByAuthorId(@RequestParam Long authorId,
+                                                          @RequestPart ChannelRequest request,
+                                                          @RequestPart MultipartFile file) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(channelService.saveByAuthorId(authorId, request, file));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ChannelResponse> updateById(@PathVariable Long id, @RequestBody ChannelRequest request) {
-        return ResponseEntity.ok(channelService.updateById(id, request));
+    public ResponseEntity<ChannelResponse> updateById(@PathVariable Long id,
+                                                      @RequestPart ChannelRequest request,
+                                                      @RequestPart MultipartFile file) {
+        return ResponseEntity.ok(channelService.updateById(id, request, file));
     }
 
     @GetMapping
