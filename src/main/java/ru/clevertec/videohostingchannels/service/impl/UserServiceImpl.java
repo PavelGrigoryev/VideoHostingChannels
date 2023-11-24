@@ -31,8 +31,8 @@ public class UserServiceImpl implements UserService {
         try {
             return userMapper.toResponse(userRepository.save(userMapper.fromRequest(request)));
         } catch (DataIntegrityViolationException e) {
-            throw new UniqueException("User with name %s and email %s is already exist"
-                    .formatted(request.name(), request.email()));
+            throw new UniqueException("User with nickname %s and email %s is already exist"
+                    .formatted(request.nickname(), request.email()));
         }
     }
 
@@ -45,8 +45,8 @@ public class UserServiceImpl implements UserService {
                     try {
                         return userRepository.saveAndFlush(user);
                     } catch (DataIntegrityViolationException e) {
-                        throw new UniqueException("User with name %s and email %s is already exist"
-                                .formatted(request.name(), request.email()));
+                        throw new UniqueException("User with nickname %s and email %s is already exist"
+                                .formatted(request.nickname(), request.email()));
                     }
                 })
                 .map(userMapper::toResponse)

@@ -45,7 +45,7 @@ Content-Type: image/jpeg
 --ImageBoundary--
 
 ###findAllByFilter
-GET http://localhost:8080/channels?name=Mortal&language=English&category=Video&page=0&size=3&sort=name
+GET http://localhost:8080/channels?name=Frank&language=Korean&category=Gaming&page=0&size=3&sort=name
 Accept: application/json
 
 ###findDetailedInformationById

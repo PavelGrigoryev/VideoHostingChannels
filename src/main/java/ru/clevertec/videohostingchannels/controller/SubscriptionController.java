@@ -1,5 +1,6 @@
 package ru.clevertec.videohostingchannels.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,12 +21,12 @@ public class SubscriptionController {
     private final SubscriptionService subscriptionService;
 
     @PostMapping
-    public ResponseEntity<SubscriptionResponse> subscribeOn(@RequestBody SubscriptionRequest request) {
+    public ResponseEntity<SubscriptionResponse> subscribeOn(@RequestBody @Valid SubscriptionRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(subscriptionService.subscribeOn(request));
     }
 
     @DeleteMapping
-    public ResponseEntity<SubscriptionResponse> subscribeOff(@RequestBody SubscriptionRequest request) {
+    public ResponseEntity<SubscriptionResponse> subscribeOff(@RequestBody @Valid SubscriptionRequest request) {
         return ResponseEntity.ok(subscriptionService.subscribeOff(request));
     }
 
