@@ -4,21 +4,26 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MultipartFileValidator implements ConstraintValidator<ValidMultipartFile, MultipartFile> {
 
-    private List<String> availableContentTypes;
+    private Pattern pattern;
 
     @Override
     public void initialize(ValidMultipartFile constraintAnnotation) {
-        availableContentTypes = List.of("image/png", "image/jpg", "image/jpeg");
+        pattern = Pattern.compile(constraintAnnotation.regexp());
     }
 
     @Override
     public boolean isValid(MultipartFile multipartFile, ConstraintValidatorContext context) {
-        String contentType = multipartFile.getContentType();
-        return availableContentTypes.contains(contentType);
+        return Optional.of(multipartFile)
+                .map(MultipartFile::getContentType)
+                .map(pattern::matcher)
+                .map(Matcher::matches)
+                .orElse(true);
     }
 
 }

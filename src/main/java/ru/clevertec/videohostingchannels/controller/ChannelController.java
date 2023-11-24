@@ -24,6 +24,7 @@ import ru.clevertec.videohostingchannels.dto.channel.ChannelRequest;
 import ru.clevertec.videohostingchannels.dto.channel.ChannelResponse;
 import ru.clevertec.videohostingchannels.service.ChannelService;
 import ru.clevertec.videohostingchannels.validation.ValidMultipartFile;
+import ru.clevertec.videohostingchannels.validation.ValidPageable;
 
 import java.util.List;
 
@@ -53,7 +54,7 @@ public class ChannelController {
     public ResponseEntity<List<ChannelFilterResponse>> findAllByFilter(@RequestParam(required = false) String name,
                                                                        @RequestParam(required = false) String language,
                                                                        @RequestParam(required = false) String category,
-                                                                       Pageable pageable) {
+                                                                       @ValidPageable Pageable pageable) {
         return ResponseEntity.ok(channelService.findAllByFilter(name, language, category, pageable));
     }
 
