@@ -19,4 +19,6 @@ public interface ChannelService {
 
     ChannelDetailedInformationResponse findDetailedInformationById(Long id);
 
+    byte[] downloadChannelAvatarById(Long id);
+
 }

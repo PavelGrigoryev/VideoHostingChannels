@@ -17,14 +17,14 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class ChannelSaver {
+public class ChannelAvatarUpdater {
 
     private final ChannelRepository channelRepository;
 
     @SneakyThrows
     @Transactional
     @EventListener(ApplicationReadyEvent.class)
-    public void saveChannels() {
+    public void updateAvatarsIfNeeded() {
         Optional<Channel> channel = channelRepository.findById(1L);
         if (channel.isPresent() && Objects.isNull(channel.get().getAvatar())) {
             List<String> files = List.of

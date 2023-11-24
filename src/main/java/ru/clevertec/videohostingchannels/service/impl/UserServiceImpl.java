@@ -1,12 +1,14 @@
 package ru.clevertec.videohostingchannels.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.clevertec.videohostingchannels.dto.channel.ChannelNamesResponse;
 import ru.clevertec.videohostingchannels.dto.user.UserRequest;
 import ru.clevertec.videohostingchannels.dto.user.UserResponse;
 import ru.clevertec.videohostingchannels.exception.NotFoundException;
+import ru.clevertec.videohostingchannels.exception.UniqueException;
 import ru.clevertec.videohostingchannels.mapper.UserMapper;
 import ru.clevertec.videohostingchannels.model.Channel;
 import ru.clevertec.videohostingchannels.model.Subscription;
@@ -26,7 +28,12 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserResponse save(UserRequest request) {
-        return userMapper.toResponse(userRepository.save(userMapper.fromRequest(request)));
+        try {
+            return userMapper.toResponse(userRepository.save(userMapper.fromRequest(request)));
+        } catch (DataIntegrityViolationException e) {
+            throw new UniqueException("User with name %s and email %s is already exist"
+                    .formatted(request.name(), request.email()));
+        }
     }
 
     @Override
@@ -34,7 +41,14 @@ public class UserServiceImpl implements UserService {
     public UserResponse updateById(Long id, UserRequest request) {
         return userRepository.findById(id)
                 .map(user -> userMapper.fromRequest(user.getId(), request))
-                .map(userRepository::save)
+                .map(user -> {
+                    try {
+                        return userRepository.saveAndFlush(user);
+                    } catch (DataIntegrityViolationException e) {
+                        throw new UniqueException("User with name %s and email %s is already exist"
+                                .formatted(request.name(), request.email()));
+                    }
+                })
                 .map(userMapper::toResponse)
                 .orElseThrow(throwNotFoundException(id));
     }

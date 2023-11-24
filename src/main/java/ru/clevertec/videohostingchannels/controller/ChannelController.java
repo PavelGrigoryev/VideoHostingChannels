@@ -2,7 +2,9 @@ package ru.clevertec.videohostingchannels.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,7 +41,7 @@ public class ChannelController {
     public ResponseEntity<ChannelResponse> updateById(@PathVariable Long id,
                                                       @RequestPart ChannelRequest request,
                                                       @RequestPart MultipartFile file) {
-        return ResponseEntity.ok(channelService.updateById(id, request, file));
+        return ResponseEntity.status(HttpStatus.CREATED).body(channelService.updateById(id, request, file));
     }
 
     @GetMapping
@@ -53,6 +55,14 @@ public class ChannelController {
     @GetMapping("/{id}")
     public ResponseEntity<ChannelDetailedInformationResponse> findDetailedInformationById(@PathVariable Long id) {
         return ResponseEntity.ok(channelService.findDetailedInformationById(id));
+    }
+
+    @GetMapping("/download/{id}")
+    public ResponseEntity<byte[]> downloadChannelAvatarById(@PathVariable Long id) {
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"avatar.jpg\"")
+                .contentType(MediaType.IMAGE_JPEG)
+                .body(channelService.downloadChannelAvatarById(id));
     }
 
 }

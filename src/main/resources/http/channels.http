@@ -51,3 +51,6 @@ Accept: application/json
 ###findDetailedInformationById
 GET http://localhost:8080/channels/2
 Accept: application/json
+
+###downloadChannelAvatarById
+GET http://localhost:8080/channels/download/2

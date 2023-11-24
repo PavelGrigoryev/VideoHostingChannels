@@ -18,7 +18,6 @@ import ru.clevertec.videohostingchannels.service.SubscriptionService;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class SubscriptionServiceImpl implements SubscriptionService {
 
     private final ChannelRepository channelRepository;

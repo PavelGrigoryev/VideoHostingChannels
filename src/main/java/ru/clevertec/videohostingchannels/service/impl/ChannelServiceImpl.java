@@ -1,6 +1,7 @@
 package ru.clevertec.videohostingchannels.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,7 +12,9 @@ import ru.clevertec.videohostingchannels.dto.channel.ChannelRequest;
 import ru.clevertec.videohostingchannels.dto.channel.ChannelResponse;
 import ru.clevertec.videohostingchannels.exception.MultipartGetBytesException;
 import ru.clevertec.videohostingchannels.exception.NotFoundException;
+import ru.clevertec.videohostingchannels.exception.UniqueException;
 import ru.clevertec.videohostingchannels.mapper.ChannelMapper;
+import ru.clevertec.videohostingchannels.model.Channel;
 import ru.clevertec.videohostingchannels.repository.ChannelRepository;
 import ru.clevertec.videohostingchannels.repository.UserRepository;
 import ru.clevertec.videohostingchannels.service.ChannelService;
@@ -38,7 +41,9 @@ public class ChannelServiceImpl implements ChannelService {
                         return channelMapper.toResponse(channelRepository
                                 .save(channelMapper.fromRequest(authorId, request, file.getBytes())));
                     } catch (IOException e) {
-                        throw new MultipartGetBytesException("Error to save avatar");
+                        throw new MultipartGetBytesException("Error to extract avatar");
+                    } catch (DataIntegrityViolationException e) {
+                        throw new UniqueException("Channel with name %s is already exist".formatted(request.name()));
                     }
                 })
                 .orElseThrow(() -> new NotFoundException("User with author_id %s is not found".formatted(authorId)));
@@ -53,10 +58,16 @@ public class ChannelServiceImpl implements ChannelService {
                         return channelMapper.fromRequest
                                 (channel.getId(), channel.getAuthor().getId(), channel.getCreatedAt(), request, file.getBytes());
                     } catch (IOException e) {
-                        throw new MultipartGetBytesException("Error to update avatar");
+                        throw new MultipartGetBytesException("Error to extract avatar");
                     }
                 })
-                .map(channelRepository::save)
+                .map(channel -> {
+                    try {
+                        return channelRepository.saveAndFlush(channel);
+                    } catch (DataIntegrityViolationException e) {
+                        throw new UniqueException("Channel with name %s is already exist".formatted(request.name()));
+                    }
+                })
                 .map(channelMapper::toResponse)
                 .orElseThrow(throwNotFoundException(id));
     }
@@ -75,6 +86,13 @@ public class ChannelServiceImpl implements ChannelService {
         return channelRepository.findDetailedInformationById(id)
                 .map(channel -> channelMapper.toDetailedInformationResponse(channel,
                         channelRepository.findSubscribersCountById(id)))
+                .orElseThrow(throwNotFoundException(id));
+    }
+
+    @Override
+    public byte[] downloadChannelAvatarById(Long id) {
+        return channelRepository.findById(id)
+                .map(Channel::getAvatar)
                 .orElseThrow(throwNotFoundException(id));
     }
 
