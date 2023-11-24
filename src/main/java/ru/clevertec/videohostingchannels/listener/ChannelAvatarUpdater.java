@@ -3,6 +3,7 @@ package ru.clevertec.videohostingchannels.listener;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Component
+@Profile("dev")
 @RequiredArgsConstructor
 public class ChannelAvatarUpdater {
 

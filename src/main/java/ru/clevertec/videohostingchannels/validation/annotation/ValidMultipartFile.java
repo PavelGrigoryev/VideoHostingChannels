@@ -1,7 +1,8 @@
-package ru.clevertec.videohostingchannels.validation;
+package ru.clevertec.videohostingchannels.validation.annotation;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
+import ru.clevertec.videohostingchannels.validation.MultipartFileValidator;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

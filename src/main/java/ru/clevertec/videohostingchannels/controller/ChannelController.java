@@ -23,8 +23,8 @@ import ru.clevertec.videohostingchannels.dto.channel.ChannelFilterResponse;
 import ru.clevertec.videohostingchannels.dto.channel.ChannelRequest;
 import ru.clevertec.videohostingchannels.dto.channel.ChannelResponse;
 import ru.clevertec.videohostingchannels.service.ChannelService;
-import ru.clevertec.videohostingchannels.validation.ValidMultipartFile;
-import ru.clevertec.videohostingchannels.validation.ValidPageable;
+import ru.clevertec.videohostingchannels.validation.annotation.ValidMultipartFile;
+import ru.clevertec.videohostingchannels.validation.annotation.ValidPageable;
 
 import java.util.List;
 
