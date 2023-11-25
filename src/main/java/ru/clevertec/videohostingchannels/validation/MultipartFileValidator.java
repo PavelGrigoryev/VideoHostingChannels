@@ -20,7 +20,7 @@ public class MultipartFileValidator implements ConstraintValidator<ValidMultipar
 
     @Override
     public boolean isValid(MultipartFile multipartFile, ConstraintValidatorContext context) {
-        return Optional.of(multipartFile)
+        return Optional.ofNullable(multipartFile)
                 .map(MultipartFile::getContentType)
                 .map(pattern::matcher)
                 .map(Matcher::matches)

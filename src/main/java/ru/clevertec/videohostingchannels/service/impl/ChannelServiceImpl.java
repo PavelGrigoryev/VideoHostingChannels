@@ -21,6 +21,7 @@ import ru.clevertec.videohostingchannels.service.ChannelService;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 @Service
@@ -38,8 +39,8 @@ public class ChannelServiceImpl implements ChannelService {
         return userRepository.findById(authorId)
                 .map(user -> {
                     try {
-                        return channelMapper.toResponse(channelRepository
-                                .save(channelMapper.fromRequest(authorId, request, file.getBytes())));
+                        return channelMapper.toResponse(channelRepository.save(channelMapper
+                                .fromRequest(authorId, request, Objects.isNull(file) ? null : file.getBytes())));
                     } catch (IOException e) {
                         throw new MultipartGetBytesException("Error to extract avatar");
                     } catch (DataIntegrityViolationException e) {
@@ -52,11 +53,11 @@ public class ChannelServiceImpl implements ChannelService {
     @Override
     @Transactional
     public ChannelResponse updateById(Long id, ChannelRequest request, MultipartFile file) {
-        return channelRepository.findById(id)
+        return channelRepository.findWithAuthorById(id)
                 .map(channel -> {
                     try {
-                        return channelMapper.fromRequest
-                                (channel.getId(), channel.getAuthor().getId(), channel.getCreatedAt(), request, file.getBytes());
+                        return channelMapper.fromRequest(channel.getId(), channel.getAuthor().getId(),
+                                channel.getCreatedAt(), request, Objects.isNull(file) ? null : file.getBytes());
                     } catch (IOException e) {
                         throw new MultipartGetBytesException("Error to extract avatar");
                     }
@@ -83,7 +84,7 @@ public class ChannelServiceImpl implements ChannelService {
 
     @Override
     public ChannelDetailedInformationResponse findDetailedInformationById(Long id) {
-        return channelRepository.findDetailedInformationById(id)
+        return channelRepository.findWithAuthorById(id)
                 .map(channel -> channelMapper.toDetailedInformationResponse(channel,
                         channelRepository.findSubscribersCountById(id)))
                 .orElseThrow(throwNotFoundException(id));
@@ -93,7 +94,7 @@ public class ChannelServiceImpl implements ChannelService {
     public byte[] downloadChannelAvatarById(Long id) {
         return channelRepository.findById(id)
                 .map(Channel::getAvatar)
-                .orElseThrow(throwNotFoundException(id));
+                .orElseThrow(() -> new NotFoundException("Avatar on channel with id %s is not found".formatted(id)));
     }
 
     private Supplier<NotFoundException> throwNotFoundException(Long id) {

@@ -22,7 +22,7 @@ public class PageableValidator implements ConstraintValidator<ValidPageable, Pag
 
     @Override
     public boolean isValid(Pageable pageable, ConstraintValidatorContext context) {
-        return Optional.of(pageable)
+        return Optional.ofNullable(pageable)
                 .map(Pageable::getSort)
                 .map(Streamable::get)
                 .map(orders -> orders.map(Sort.Order::getProperty)

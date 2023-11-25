@@ -29,7 +29,7 @@ public interface ChannelRepository extends JpaRepository<Channel, Long> {
     Integer findSubscribersCountById(Long id);
 
     @EntityGraph(attributePaths = {"author"})
-    Optional<Channel> findDetailedInformationById(Long id);
+    Optional<Channel> findWithAuthorById(Long id);
 
     @Modifying
     @Query("""

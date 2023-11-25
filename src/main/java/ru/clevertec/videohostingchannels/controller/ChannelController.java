@@ -39,14 +39,14 @@ public class ChannelController {
     @PostMapping
     public ResponseEntity<ChannelResponse> saveByAuthorId(@RequestParam @Positive Long authorId,
                                                           @RequestPart @Valid ChannelRequest request,
-                                                          @RequestPart @ValidMultipartFile MultipartFile file) {
+                                                          @RequestPart(required = false) @ValidMultipartFile MultipartFile file) {
         return ResponseEntity.status(HttpStatus.CREATED).body(channelService.saveByAuthorId(authorId, request, file));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ChannelResponse> updateById(@PathVariable @Positive Long id,
                                                       @RequestPart @Valid ChannelRequest request,
-                                                      @RequestPart @ValidMultipartFile MultipartFile file) {
+                                                      @RequestPart(required = false) @ValidMultipartFile MultipartFile file) {
         return ResponseEntity.status(HttpStatus.CREATED).body(channelService.updateById(id, request, file));
     }
 
