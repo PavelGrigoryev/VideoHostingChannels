@@ -7,6 +7,8 @@ import ru.clevertec.videohostingchannels.dto.channel.ChannelFilterResponse;
 import ru.clevertec.videohostingchannels.dto.channel.ChannelRequest;
 import ru.clevertec.videohostingchannels.dto.channel.ChannelResponse;
 import ru.clevertec.videohostingchannels.model.Channel;
+import ru.clevertec.videohostingchannels.model.projection.ChannelDetailedProjection;
+import ru.clevertec.videohostingchannels.model.projection.ChannelFilterProjection;
 
 import java.time.LocalDateTime;
 
@@ -22,8 +24,8 @@ public interface ChannelMapper {
     @Mapping(target = "authorId", source = "channel.author.id")
     ChannelResponse toResponse(Channel channel);
 
-    ChannelFilterResponse toFilterInfoResponse(Channel channel, Integer subscribersCount);
+    ChannelFilterResponse toFilterResponse(ChannelFilterProjection projection);
 
-    ChannelDetailedInformationResponse toDetailedInformationResponse(Channel channel, Integer subscribersCount);
+    ChannelDetailedInformationResponse toDetailedInformationResponse(ChannelDetailedProjection projection);
 
 }

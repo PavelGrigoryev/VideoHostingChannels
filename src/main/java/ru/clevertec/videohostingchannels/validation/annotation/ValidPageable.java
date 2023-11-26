@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = PageableValidator.class)
 public @interface ValidPageable {
 
-    String regexp() default "name|mainLanguage|category";
+    String regexp() default "name|mainLanguage|category|subscribersCount";
 
     String message() default "Acceptable pageable sort orders are only: {regexp}";
 

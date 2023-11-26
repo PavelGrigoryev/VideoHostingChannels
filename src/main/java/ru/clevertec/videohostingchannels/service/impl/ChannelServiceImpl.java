@@ -77,16 +77,14 @@ public class ChannelServiceImpl implements ChannelService {
     public List<ChannelFilterResponse> findAllByFilter(String name, String language, String category, Pageable pageable) {
         return channelRepository.findAllByFilter(name, language, category, pageable)
                 .stream()
-                .map(channel -> channelMapper.toFilterInfoResponse(channel,
-                        channelRepository.findSubscribersCountById(channel.getId())))
+                .map(channelMapper::toFilterResponse)
                 .toList();
     }
 
     @Override
     public ChannelDetailedInformationResponse findDetailedInformationById(Long id) {
-        return channelRepository.findWithAuthorById(id)
-                .map(channel -> channelMapper.toDetailedInformationResponse(channel,
-                        channelRepository.findSubscribersCountById(id)))
+        return channelRepository.findDetailedInformationById(id)
+                .map(channelMapper::toDetailedInformationResponse)
                 .orElseThrow(throwNotFoundException(id));
     }
 
