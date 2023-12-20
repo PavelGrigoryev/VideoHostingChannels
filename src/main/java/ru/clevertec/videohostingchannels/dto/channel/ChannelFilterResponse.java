@@ -6,7 +6,8 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import java.util.Arrays;
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public record ChannelFilterResponse(String name,
+public record ChannelFilterResponse(Long id,
+                                    String name,
                                     Integer subscribersCount,
                                     String mainLanguage,
                                     byte[] avatar,

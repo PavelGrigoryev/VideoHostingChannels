@@ -14,7 +14,8 @@ import java.util.Optional;
 public interface ChannelRepository extends JpaRepository<Channel, Long> {
 
     @Query("""
-            SELECT c.name AS name,
+            SELECT c.id AS id,
+            c.name AS name,
             COUNT(u.id) AS subscribersCount,
             c.mainLanguage AS mainLanguage,
             c.avatar AS avatar,
