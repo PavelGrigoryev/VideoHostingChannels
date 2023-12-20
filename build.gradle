@@ -31,8 +31,6 @@ dependencies {
     annotationProcessor "org.mapstruct:mapstruct-processor:$mapstructVersion"
 
     runtimeOnly 'org.postgresql:postgresql'
-
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 compileJava {
@@ -45,8 +43,4 @@ compileJava {
 
 tasks.named('bootBuildImage') {
     builder = 'paketobuildpacks/builder-jammy-base:latest'
-}
-
-tasks.named('test') {
-    useJUnitPlatform()
 }

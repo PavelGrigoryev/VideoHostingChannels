@@ -1,0 +1,25 @@
+###save
+POST http://localhost:8080/users
+Accept: application/json
+Content-Type: application/json
+
+{
+  "nickname": "Scorpion",
+  "name": "Hanzo",
+  "email": "scorpionMK@gmail.com"
+}
+
+###updateById
+PUT http://localhost:8080/users/1
+Accept: application/json
+Content-Type: application/json
+
+{
+  "nickname": "Sub-Zero",
+  "name": "Lieng",
+  "email": "frostPowerMK@gmail.com"
+}
+
+###findAllSubscribedChannelNamesById
+GET http://localhost:8080/users/2/subscriptions
+Accept: application/json

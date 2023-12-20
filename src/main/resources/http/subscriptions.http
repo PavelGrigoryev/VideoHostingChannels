@@ -1,0 +1,9 @@
+###subscribeOn
+POST http://localhost:8080/users/1/subscriptions/1
+Accept: application/json
+Content-Type: application/json
+
+###subscribeOff
+DELETE http://localhost:8080/users/1/subscriptions/1
+Accept: application/json
+Content-Type: application/json
