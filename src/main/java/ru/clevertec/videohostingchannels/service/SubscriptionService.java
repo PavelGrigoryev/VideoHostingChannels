@@ -1,12 +1,11 @@
 package ru.clevertec.videohostingchannels.service;
 
-import ru.clevertec.videohostingchannels.dto.subscription.SubscriptionRequest;
 import ru.clevertec.videohostingchannels.dto.subscription.SubscriptionResponse;
 
 public interface SubscriptionService {
 
-    SubscriptionResponse subscribeOn(SubscriptionRequest request);
+    SubscriptionResponse subscribeOn(Long userId, Long channelId);
 
-    SubscriptionResponse subscribeOff(SubscriptionRequest request);
+    SubscriptionResponse subscribeOff(Long userId, Long channelId);
 
 }

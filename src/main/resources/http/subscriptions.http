@@ -1,19 +1,9 @@
 ###subscribeOn
-POST http://localhost:8080/subscriptions
+POST http://localhost:8080/users/1/subscriptions/1
 Accept: application/json
 Content-Type: application/json
-
-{
-  "user_id": 1,
-  "channel_id": 1
-}
 
 ###subscribeOff
-DELETE http://localhost:8080/subscriptions
+DELETE http://localhost:8080/users/1/subscriptions/1
 Accept: application/json
 Content-Type: application/json
-
-{
-  "user_id": 1,
-  "channel_id": 1
-}

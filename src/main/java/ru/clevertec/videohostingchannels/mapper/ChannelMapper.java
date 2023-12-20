@@ -7,7 +7,6 @@ import ru.clevertec.videohostingchannels.dto.channel.ChannelFilterResponse;
 import ru.clevertec.videohostingchannels.dto.channel.ChannelRequest;
 import ru.clevertec.videohostingchannels.dto.channel.ChannelResponse;
 import ru.clevertec.videohostingchannels.model.Channel;
-import ru.clevertec.videohostingchannels.model.projection.ChannelDetailedProjection;
 import ru.clevertec.videohostingchannels.model.projection.ChannelFilterProjection;
 
 import java.time.LocalDateTime;
@@ -26,6 +25,7 @@ public interface ChannelMapper {
 
     ChannelFilterResponse toFilterResponse(ChannelFilterProjection projection);
 
-    ChannelDetailedInformationResponse toDetailedInformationResponse(ChannelDetailedProjection projection);
+    @Mapping(target = "subscribersCount", expression = "java(channel.getSubscriptions().size())")
+    ChannelDetailedInformationResponse toDetailedInformationResponse(Channel channel);
 
 }

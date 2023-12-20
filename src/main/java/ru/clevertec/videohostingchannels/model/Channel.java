@@ -1,7 +1,6 @@
 package ru.clevertec.videohostingchannels.model;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,7 +16,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import ru.clevertec.videohostingchannels.model.listener.ChannelCreatedAtListener;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -32,7 +31,6 @@ import java.util.Objects;
 @Accessors(chain = true)
 @Entity
 @Table(name = "channels")
-@EntityListeners(ChannelCreatedAtListener.class)
 public class Channel {
 
     @Id
@@ -51,7 +49,9 @@ public class Channel {
     @ToString.Exclude
     private List<Subscription> subscriptions = new ArrayList<>();
 
+    @CreationTimestamp
     private LocalDateTime createdAt;
+
     private String mainLanguage;
 
     @Lob

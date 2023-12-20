@@ -33,10 +33,10 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<UserResponse> updateById(@PathVariable @Positive Long id, @RequestBody @Valid UserRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.updateById(id, request));
+        return ResponseEntity.status(HttpStatus.OK).body(userService.updateById(id, request));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id}/subscriptions")
     public ResponseEntity<ChannelNamesResponse> findAllSubscribedChannelNamesById(@PathVariable @Positive Long id) {
         return ResponseEntity.ok(userService.findAllSubscribedChannelNamesById(id));
     }

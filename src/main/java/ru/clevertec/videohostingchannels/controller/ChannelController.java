@@ -3,6 +3,7 @@ package ru.clevertec.videohostingchannels.controller;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -26,8 +27,6 @@ import ru.clevertec.videohostingchannels.service.ChannelService;
 import ru.clevertec.videohostingchannels.validation.annotation.ValidMultipartFile;
 import ru.clevertec.videohostingchannels.validation.annotation.ValidPageable;
 
-import java.util.List;
-
 @Validated
 @RestController
 @RequiredArgsConstructor
@@ -47,11 +46,11 @@ public class ChannelController {
     public ResponseEntity<ChannelResponse> updateById(@PathVariable @Positive Long id,
                                                       @RequestPart @Valid ChannelRequest request,
                                                       @RequestPart(required = false) @ValidMultipartFile MultipartFile file) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(channelService.updateById(id, request, file));
+        return ResponseEntity.status(HttpStatus.OK).body(channelService.updateById(id, request, file));
     }
 
     @GetMapping
-    public ResponseEntity<List<ChannelFilterResponse>> findAllByFilter(@RequestParam(required = false) String name,
+    public ResponseEntity<Page<ChannelFilterResponse>> findAllByFilter(@RequestParam(required = false) String name,
                                                                        @RequestParam(required = false) String language,
                                                                        @RequestParam(required = false) String category,
                                                                        @ValidPageable Pageable pageable) {

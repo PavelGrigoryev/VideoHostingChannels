@@ -2,6 +2,7 @@ package ru.clevertec.videohostingchannels.exception.handler;
 
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -10,25 +11,32 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import ru.clevertec.videohostingchannels.exception.MultipartGetBytesException;
 import ru.clevertec.videohostingchannels.exception.NotFoundException;
-import ru.clevertec.videohostingchannels.exception.UniqueException;
+import ru.clevertec.videohostingchannels.exception.ServiceException;
 import ru.clevertec.videohostingchannels.exception.model.ExceptionResponse;
 import ru.clevertec.videohostingchannels.exception.model.ValidationExceptionResponse;
 import ru.clevertec.videohostingchannels.exception.model.Violation;
 
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @ControllerAdvice
 public class VideoHostingChannelsExceptionHandler {
 
-    @ExceptionHandler(UniqueException.class)
-    public ResponseEntity<ExceptionResponse> handleUniqueException(UniqueException exception) {
-        return sendResponse(exception.getMessage(), HttpStatus.CONFLICT);
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ExceptionResponse> handleDataIntegrityViolationException(DataIntegrityViolationException exception) {
+        Throwable rootCause = exception.getRootCause();
+        return sendResponse(Objects.nonNull(rootCause) ? rootCause.getMessage() : exception.getMessage(), HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ExceptionResponse> handleNotFoundException(NotFoundException exception) {
         return sendResponse(exception.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ServiceException.class)
+    public ResponseEntity<ExceptionResponse> handleServiceException(ServiceException exception) {
+        return sendResponse(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(MultipartGetBytesException.class)

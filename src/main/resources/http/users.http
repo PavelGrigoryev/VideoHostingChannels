@@ -21,5 +21,5 @@ Content-Type: application/json
 }
 
 ###findAllSubscribedChannelNamesById
-GET http://localhost:8080/users/2
+GET http://localhost:8080/users/2/subscriptions
 Accept: application/json

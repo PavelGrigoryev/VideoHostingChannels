@@ -1,20 +1,20 @@
 package ru.clevertec.videohostingchannels.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.clevertec.videohostingchannels.dto.channel.ChannelNamesResponse;
 import ru.clevertec.videohostingchannels.dto.user.UserRequest;
 import ru.clevertec.videohostingchannels.dto.user.UserResponse;
 import ru.clevertec.videohostingchannels.exception.NotFoundException;
-import ru.clevertec.videohostingchannels.exception.UniqueException;
+import ru.clevertec.videohostingchannels.exception.ServiceException;
 import ru.clevertec.videohostingchannels.mapper.UserMapper;
 import ru.clevertec.videohostingchannels.model.Channel;
 import ru.clevertec.videohostingchannels.model.Subscription;
 import ru.clevertec.videohostingchannels.repository.UserRepository;
 import ru.clevertec.videohostingchannels.service.UserService;
 
+import java.util.Optional;
 import java.util.function.Supplier;
 
 @Service
@@ -28,12 +28,11 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserResponse save(UserRequest request) {
-        try {
-            return userMapper.toResponse(userRepository.save(userMapper.fromRequest(request)));
-        } catch (DataIntegrityViolationException e) {
-            throw new UniqueException("User with nickname %s and email %s is already exist"
-                    .formatted(request.nickname(), request.email()));
-        }
+        return Optional.of(request)
+                .map(userMapper::fromRequest)
+                .map(userRepository::save)
+                .map(userMapper::toResponse)
+                .orElseThrow(() -> new ServiceException("Error to save user"));
     }
 
     @Override
@@ -41,14 +40,7 @@ public class UserServiceImpl implements UserService {
     public UserResponse updateById(Long id, UserRequest request) {
         return userRepository.findById(id)
                 .map(user -> userMapper.fromRequest(user.getId(), request))
-                .map(user -> {
-                    try {
-                        return userRepository.saveAndFlush(user);
-                    } catch (DataIntegrityViolationException e) {
-                        throw new UniqueException("User with nickname %s and email %s is already exist"
-                                .formatted(request.nickname(), request.email()));
-                    }
-                })
+                .map(userRepository::save)
                 .map(userMapper::toResponse)
                 .orElseThrow(throwNotFoundException(id));
     }
